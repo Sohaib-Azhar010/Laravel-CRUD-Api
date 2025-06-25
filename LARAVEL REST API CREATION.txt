@@ -1,0 +1,47 @@
+Laravel Rest Api
+
+After Creating App 
+Open Terminal and run > php artisan install:api
+
+Check Controller , Model and Routes for Api files
+
+Create Your Controller in Controller>Api>YourController
+
+Command to check api route list >php artisan route:list
+
+GET|HEAGET/HEAD        api/products ............................................ products.index › Api\ProductController@index  
+  POST POST            api/products ............................................ products.store › Api\ProductController@store  
+  GET|HGET/HEAD        api/products/{product} .................................... products.show › Api\ProductController@show  
+  PUT|PPUT|PATCH       api/products/{product} ................................ products.update › Api\ProductController@update  
+  DELETDELETE          api/products/{product} .............................. products.destroy › Api\ProductController@destroy 
+
+Then make a Resource File >php artisan make:resource ProductResource
+
+The index function will be like that   
+public function index()
+    {
+        $products = Product::get();
+        if($products){
+            return ProductResource::collection($products);
+        }
+        else{
+            return response()->json(['message', 'No recores Available'],200);
+        }
+
+    }
+
+Make chnages in ProductResouce function , inspite of array send data linearly
+public function toArray(Request $request): array
+    {
+        // return parent::toArray($request);    //if you want to show everything 
+        // if you want to show specific data
+        return [
+            "id"=> $this->id,
+            'name'=> $this->name,
+            'description'=> $this->description,
+            'price'=> $this->price,
+            'created_at'=> $this->created_at,
+        ];
+    }
+
+
